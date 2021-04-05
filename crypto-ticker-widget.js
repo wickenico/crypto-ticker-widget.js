@@ -1,3 +1,17 @@
+/* --------------------------------------------------------------
+Script: crypto-ticker-widget
+Author: Nico Wickersheim
+Version: 1.0.0
+
+Description:
+Displays the current course of a cryptoin any fiat currency based on 
+the data of coinbase API.
+
+Changelog:
+
+1.0.0: Initialization
+-------------------------------------------------------------- */
+
 const url = `https://api.coinbase.com/v2/prices/ADA-USD/spot`
 const req = new Request(url)
 const res = await req.loadJSON()
