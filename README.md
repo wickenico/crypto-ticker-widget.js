@@ -26,8 +26,8 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
 
 ![cryptotickerWidgetSettings](img/cryptoTickerWidgetSettings.png)
 ## Links
-Coinbase API: https://developers.coinbase.com/api/v2#get-spot-price
-Coinpaprika API: https://api.coinpaprika.com/#tag/Tools/paths/~1search/get
+Coinbase API: https://developers.coinbase.com/api/v2#get-spot-price <br>
+Coinpaprika API: https://api.coinpaprika.com/#tag/Tools/paths/~1search/get <br>
 
 ## Contribution
 
