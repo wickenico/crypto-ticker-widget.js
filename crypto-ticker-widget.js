@@ -12,17 +12,37 @@ Changelog:
 1.0.0: Initialization
 -------------------------------------------------------------- */
 
-const url = `https://api.coinbase.com/v2/prices/ADA-USD/spot`
+let params = null;
+if (args.widgetParameter == null) {
+    params = ["BTC", "USD"];
+} else {
+    params = args.widgetParameter.split(",")
+    console.log(params)
+}
+const url = 'https://api.coinbase.com/v2/prices/' + params[0] + '-' + params[1] + '/spot'
 const req = new Request(url)
 const res = await req.loadJSON()
 const base = res.data.base;
 const currency = res.data.currency;
 const amount = res.data.amount;
-const i = new Request('https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@9ab8d6934b83a4aa8ae5e8711609a70ca0ab1b2b/32/white/' + base.toLowerCase() + '.png')
-const img = await i.loadImage()
 
+let img = {};
+const i = new Request('https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@9ab8d6934b83a4aa8ae5e8711609a70ca0ab1b2b/128/white/' + base.toLowerCase() + '.png')
+try {
+    img = await i.loadImage()
+    console.log(i.response.statusCode)
+} catch (e) {
+    const i = new Request('https://image.flaticon.com/icons/png/512/107/107587.png')
+    img = await i.loadImage()
+}
 
-let widget = createWidget(base, amount, currency, img)
+const nameUrl = 'https://api.coinpaprika.com/v1/search?q=' + base.toLowerCase() + '&c=currencies&limit=1'
+const nameReq = new Request(nameUrl)
+const resName = await nameReq.loadJSON()
+const name = resName.currencies[0].name;
+const rank = resName.currencies[0].rank;
+
+let widget = createWidget(base, amount, currency, img, name, rank)
 if (config.runsInWidget) {
     // create and show widget
     Script.setWidget(widget)
@@ -32,24 +52,46 @@ else {
     widget.presentSmall()
 }
 
-function createWidget(base, amount, currency, img) {
+function createWidget(base, amount, currency, img, name, rank) {
     let w = new ListWidget()
     w.backgroundColor = new Color("#1A1A1A")
 
-    let image = w.addImage(img)
+    let imageStack = w.addStack();
+    imageStack.setPadding(8, 25, 0, 10);
+    imageStack.layoutHorizontally();
+    imageStack.centerAlignContent();
+    let image = imageStack.addImage(img)
     image.imageSize = new Size(45, 45)
     image.centerAlignImage()
+    imageStack.addSpacer(12);
+
+    let imageTextStack = imageStack.addStack();
+    imageTextStack.layoutVertically();
+    imageTextStack.addSpacer(0);
+
+    // Symbol of crypto token
+    let baseText = imageTextStack.addText(base)
+    baseText.textColor = Color.white()
+    baseText.font = Font.systemFont(20)
+
+    // Rank of crypto token
+    let rankText = imageTextStack.addText("Rank: " + rank)
+    rankText.textColor = Color.white()
+    rankText.font = Font.systemFont(11)
 
     w.addSpacer(8)
 
-    let staticText = w.addText(base + ' - ' + currency + ':')
+    // Full name of crypto token
+    let staticText = w.addText(name)
     staticText.textColor = Color.white()
-    staticText.font = Font.boldSystemFont(12)
+    staticText.font = Font.systemFont(13)
     staticText.centerAlignText()
 
+
     w.addSpacer(8)
 
-    let amountTxt = w.addText(amount + ' ' + currency)
+    // Round amount to 2 decimal positions
+    let amountTxt = w.addText(parseFloat(amount).toFixed(2) + ' ' + currency)
     amountTxt.textColor = Color.orange()
     amountTxt.font = Font.systemFont(16)
     amountTxt.centerAlignText()
