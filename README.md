@@ -19,7 +19,10 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
  4. Create a new widget on homescreen and select this script in scriptable
 
  ## Usage
-- Parameters: Symbol of crypto currency + , + symbol of fiat currency (like ETH,EUR)
+- Parameters: Symbol of crypto currency + , + symbol of fiat currency
+- Example: ETH,EUR (small and big letters possible)
+
+
 ![cryptotickerWidgetSettings](img/cryptoTickerWidgetSettings.png)
 ## Links
 Coinbase API: https://developers.coinbase.com/api/v2#get-spot-price
