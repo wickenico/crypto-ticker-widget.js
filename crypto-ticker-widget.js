@@ -13,34 +13,58 @@ Changelog:
 -------------------------------------------------------------- */
 
 let params = null;
+// Parameter takeover from input
 if (args.widgetParameter == null) {
-    params = ["BTC", "USD"];
+    params = ["BTC", "USD"]; // Default input without parameters
 } else {
     params = args.widgetParameter.split(",")
     console.log(params)
 }
+
+// Fetch Coinbase API json object
 const url = 'https://api.coinbase.com/v2/prices/' + params[0] + '-' + params[1] + '/spot'
 const req = new Request(url)
 const res = await req.loadJSON()
-const base = res.data.base;
-const currency = res.data.currency;
-const amount = res.data.amount;
+let base = "";
+let currency = "";
+let amount = "";
+// Check if the api response contains an error message
+if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+    base = res.data.base;
+    currency = res.data.currency;
+    amount = res.data.amount;
+} else {
+    base = "";
+    currency = "";
+    amount = res.errors[0].message;
+}
 
+// Image fetching
 let img = {};
-const i = new Request('https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@9ab8d6934b83a4aa8ae5e8711609a70ca0ab1b2b/128/white/' + base.toLowerCase() + '.png')
+let i = {};
+// Fetch belonging image to crypto symbol
+if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+    i = new Request('https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@9ab8d6934b83a4aa8ae5e8711609a70ca0ab1b2b/128/white/' + base.toLowerCase() + '.png')
+}
 try {
     img = await i.loadImage()
     console.log(i.response.statusCode)
 } catch (e) {
-    const i = new Request('https://image.flaticon.com/icons/png/512/107/107587.png')
+    // Fetch default independent image
+    i = new Request('https://image.flaticon.com/icons/png/512/107/107587.png')
     img = await i.loadImage()
 }
 
-const nameUrl = 'https://api.coinpaprika.com/v1/search?q=' + base.toLowerCase() + '&c=currencies&limit=1'
-const nameReq = new Request(nameUrl)
-const resName = await nameReq.loadJSON()
-const name = resName.currencies[0].name;
-const rank = resName.currencies[0].rank;
+// Fetch further information to crpyto from Coinpaprika
+let name = "";
+let rank = "";
+if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+    const nameUrl = 'https://api.coinpaprika.com/v1/search?q=' + base.toLowerCase() + '&c=currencies&limit=1'
+    const nameReq = new Request(nameUrl)
+    const resName = await nameReq.loadJSON()
+    name = resName.currencies[0].name;
+    rank = resName.currencies[0].rank;
+}
 
 let widget = createWidget(base, amount, currency, img, name, rank)
 if (config.runsInWidget) {
@@ -56,6 +80,7 @@ function createWidget(base, amount, currency, img, name, rank) {
     let w = new ListWidget()
     w.backgroundColor = new Color("#1A1A1A")
 
+    // Place image on the left top
     let imageStack = w.addStack();
     imageStack.setPadding(8, 25, 0, 10);
     imageStack.layoutHorizontally();
@@ -75,7 +100,10 @@ function createWidget(base, amount, currency, img, name, rank) {
     baseText.font = Font.systemFont(20)
 
     // Rank of crypto token
-    let rankText = imageTextStack.addText("Rank: " + rank)
+    let rankText = "";
+    if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+        rankText = imageTextStack.addText("Rank: " + rank)
+    }
     rankText.textColor = Color.white()
     rankText.font = Font.systemFont(11)
 
@@ -87,17 +115,24 @@ function createWidget(base, amount, currency, img, name, rank) {
     staticText.font = Font.systemFont(13)
     staticText.centerAlignText()
 
-
     w.addSpacer(8)
 
     // Round amount to 2 decimal positions
-    let amountTxt = w.addText(parseFloat(amount).toFixed(2) + ' ' + currency)
-    amountTxt.textColor = Color.orange()
+    let amountTxt = "";
+    if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+        amountTxt = w.addText(parseFloat(amount).toFixed(2) + ' ' + currency)
+        amountTxt.textColor = Color.orange()
+    } else {
+        amountTxt = w.addText(amount); // Write error message in case as amount
+        amountTxt.textColor = Color.red()
+    }
+
     amountTxt.font = Font.systemFont(16)
     amountTxt.centerAlignText()
 
     w.addSpacer(8)
 
+    // Bottom date text 
     let currentDate = new Date();
     let lastDate = w.addDate(currentDate);
     lastDate.textColor = Color.gray()
