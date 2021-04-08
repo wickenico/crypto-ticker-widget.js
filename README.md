@@ -8,7 +8,7 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
    <a href="#usage">Usage</a> •
    <a href="#links">Links</a> •
    <a href="#contribution">Contribution</a> •
-   <a href="todo">TODO</a>
+   <a href="#todo">TODO</a> •
  </p>
 
 ## Setup
@@ -21,11 +21,13 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
  ## Usage
 - Parameters: Symbol of crypto currency + , + symbol of fiat currency
 - Example: ETH,EUR (small and big letters possible)
-
+- If you don't enter any parameters the default is set to BTC,USD
+- If there's no picture of the selected available it will be filled with a placeholder image
 
 ![cryptotickerWidgetSettings](img/cryptoTickerWidgetSettings.png)
 ## Links
 Coinbase API: https://developers.coinbase.com/api/v2#get-spot-price
+Coinpaprika API: https://api.coinpaprika.com/#tag/Tools/paths/~1search/get
 
 ## Contribution
 
