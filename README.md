@@ -1,7 +1,7 @@
 # crypto-ticker-widget.js
 A Scriptable widget that shows the current crypto course in fiat currency based on coinbase
 
-![cryptotickerWidget](img/cryptotickerWidget.png)
+![cryptoTickerWidget](img/cryptotickerWidget.png)
 
  <p>
    <a href="#setup">Setup</a> •
@@ -24,7 +24,9 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
 - If you don't enter any parameters the default is set to BTC,USD
 - If there's no picture of the selected available it will be filled with a placeholder image
 
-![cryptotickerWidgetSettings](img/cryptoTickerWidgetSettings.png)
+![cryptotickerWidgetSettings](img/cryptoTickerWidgetSettings.png) <br>
+
+![cryptotickerWidgetADA](img/cryptoTickerWidgetADA.png)
 ## Links
 Coinbase API: https://developers.coinbase.com/api/v2#get-spot-price <br>
 Coinpaprika API: https://api.coinpaprika.com/#tag/Tools/paths/~1search/get <br>
