@@ -15,7 +15,7 @@ Changelog:
 let params = null;
 // Parameter takeover from input
 if (args.widgetParameter == null) {
-    params = ["BTC", "USD"]; // Default input without parameters
+    params = ["BTC", "EUR"]; // Default input without parameters
 } else {
     params = args.widgetParameter.split(",")
     console.log(params)
@@ -38,6 +38,8 @@ if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
     currency = "";
     amount = res.errors[0].message;
 }
+
+//amount = 100000000;
 
 // Image fetching
 let img = {};
@@ -120,7 +122,15 @@ function createWidget(base, amount, currency, img, name, rank) {
     // Round amount to 2 decimal positions
     let amountTxt = "";
     if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
-        amountTxt = w.addText(parseFloat(amount).toFixed(2) + ' ' + currency)
+        // Cut numbers over 10 Million and show just with ending 'M'
+        if (parseFloat(amount) >= 10000000) {
+            amount = (parseFloat(amount) / 1000000).toFixed(2).replace(/\.0$/, '');
+            amount += "M";
+            console.log(amount)
+        } else {
+            amount = parseFloat(amount).toFixed(2);
+        }
+        amountTxt = w.addText(amount + ' ' + currency)
         amountTxt.textColor = Color.orange()
     } else {
         amountTxt = w.addText(amount); // Write error message in case as amount
