@@ -1,6 +1,9 @@
 # crypto-ticker-widget.js
 A Scriptable widget that shows the current crypto course in fiat currency based on coinbase
 
+ ![GitHub last commit](https://img.shields.io/github/last-commit/wickenico/crypto-ticker-widget.js) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/wickenico/crypto-ticker-widget.js)
+ ![Visits Badge](https://badges.pufler.dev/visits/wickenico/crypto-ticker-widget.js)
+
 ![cryptoTickerWidget](img/cryptotickerWidget.png)
 
  <p>
