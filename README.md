@@ -40,4 +40,5 @@ If you have any ideas for extensions or changes just let me know.
 
 ## TODO
 
-- Errorhandling for missing json objects
+- DONE: Errorhandling for missing json objects
+- Add up and down symbols
