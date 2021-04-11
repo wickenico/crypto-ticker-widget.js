@@ -4,7 +4,7 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
  ![GitHub last commit](https://img.shields.io/github/last-commit/wickenico/crypto-ticker-widget.js) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/wickenico/crypto-ticker-widget.js)
  ![Visits Badge](https://badges.pufler.dev/visits/wickenico/crypto-ticker-widget.js)
 
-![cryptoTickerWidget](img/cryptotickerWidget_2.jpg)
+![cryptoTickerWidget](img/cryptoTickerWidget_2.jpg)
 
  <p>
    <a href="#setup">Setup</a> •
