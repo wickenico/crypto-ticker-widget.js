@@ -15,10 +15,14 @@ Changelog:
 let params = null;
 // Parameter takeover from input
 if (args.widgetParameter == null) {
-    params = ["BTC", "USD"]; // Default input without parameters
+    params = ["BTC", "EUR", "1"]; // Default input without parameters
 } else {
     params = args.widgetParameter.split(",")
     console.log(params)
+}
+
+if (params[2] == null) {
+    params[2] = 1;
 }
 
 // Fetch Coinbase API json object
@@ -164,6 +168,7 @@ function createWidget(base, amount, currency, img, name, rank) {
     let amountTxt = "";
     if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
         // Cut numbers over 10 Million and show just with ending 'M'
+        amount = (amount / 100) * (params[2] * 100)
         if (parseFloat(amount) >= 10000000) {
             amount = (parseFloat(amount) / 1000000).toFixed(2).replace(/\.0$/, '');
             amount += "M";
