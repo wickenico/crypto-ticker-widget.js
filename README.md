@@ -42,3 +42,5 @@ If you have any ideas for extensions or changes just let me know.
 
 - DONE: Errorhandling for missing json objects
 - DONE: Add up and down symbols
+- Fallback to Coinpaprika course
+- New Parameter for a specific amount
