@@ -15,7 +15,7 @@ Changelog:
 let params = null;
 // Parameter takeover from input
 if (args.widgetParameter == null) {
-    params = ["BTC", "EUR", "1"]; // Default input without parameters
+    params = ["BAT", "EUR", "1"]; // Default input without parameters
 } else {
     params = args.widgetParameter.split(",")
     console.log(params)
@@ -32,11 +32,13 @@ const res = await req.loadJSON()
 let base = "";
 let currency = "";
 let amount = "";
+let marketName = "";
 // Check if the api response contains an error message
 if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
     base = res.data.base;
     currency = res.data.currency;
     amount = res.data.amount;
+    marketName = "Coinbase";
 } else {
     amount = res.errors[0].message;
 }
@@ -154,6 +156,10 @@ function createWidget(base, amount, currency, img, name, rank) {
     rankText.textColor = Color.white()
     rankText.font = Font.systemFont(12)
 
+    let marketText = imageTextStack.addText(marketName)
+    marketText.textColor = Color.gray()
+    marketText.font = Font.mediumSystemFont(9)
+
     w.addSpacer(8)
 
     // Full name of crypto token
@@ -161,6 +167,14 @@ function createWidget(base, amount, currency, img, name, rank) {
     staticText.textColor = Color.white()
     staticText.font = Font.systemFont(13)
     staticText.centerAlignText()
+
+    if (params[2] != 1) {
+        w.addSpacer(2)
+        let specialAmount = w.addText(params[2] + " " + base + " =")
+        specialAmount.textColor = Color.gray()
+        specialAmount.font = Font.mediumSystemFont(9)
+        specialAmount.centerAlignText()
+    }
 
     w.addSpacer(8)
 
