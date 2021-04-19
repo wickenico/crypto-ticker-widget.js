@@ -11,11 +11,10 @@ Changelog:
 
 1.0.0: Initialization
 -------------------------------------------------------------- */
-
 let params = null;
 // Parameter takeover from input
 if (args.widgetParameter == null) {
-    params = ["BAT", "EUR", "1"]; // Default input without parameters
+    params = ["DOGE", "EUR", "1"]; // Default input without parameters
 } else {
     params = args.widgetParameter.split(",")
     console.log(params)
@@ -33,31 +32,74 @@ let base = "";
 let currency = "";
 let amount = "";
 let marketName = "";
+let USDamount = "";
+let coinbaseReqFailed = JSON.stringify(res).toLowerCase().includes("errors")
+
 // Check if the api response contains an error message
-if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+if (coinbaseReqFailed == false) {
     base = res.data.base;
     currency = res.data.currency;
     amount = res.data.amount;
     marketName = "Coinbase";
-} else {
-    amount = res.errors[0].message;
+
+    // Fetch Coinbase API json object as USD for comapre with latest course (only available in USD)
+    const USDurl = 'https://api.coinbase.com/v2/prices/' + params[0] + '-USD/spot'
+    const USDreq = new Request(USDurl)
+    const USDres = await USDreq.loadJSON()
+    if (coinbaseReqFailed == false || marketName != "") {
+        USDamount = USDres.data.amount;
+        USDamount = parseFloat(USDamount).toFixed(2)
+    } else {
+        base = params[0]
+        currency = params[1]
+        amount = res.errors[0].message;
+    }
 }
 
-let USDamount = "";
-// Fetch Coinbase API json object as USD for comapre with latest (onyl available in USD)
-const USDurl = 'https://api.coinbase.com/v2/prices/' + params[0] + '-USD/spot'
-const USDreq = new Request(USDurl)
-const USDres = await USDreq.loadJSON()
-if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
-    USDamount = USDres.data.amount;
-    USDamount = parseFloat(USDamount).toFixed(2)
+// Second try with anoher coinbase api  
+if (coinbaseReqFailed == true) {
+
+    const url2 = 'https://api.coinbase.com/v2/exchange-rates?currency=' + params[0]
+    const req2 = new Request(url2)
+    const res2 = await req2.loadJSON()
+    coinbaseReqFailed = JSON.stringify(res2).toLowerCase().includes("errors")
+    if (coinbaseReqFailed == false) {
+
+        const string = JSON.stringify(res2.data.rates)
+
+        const indexFIAT = string.indexOf(params[1])
+        const index1 = indexFIAT + 6
+        const index2 = string.indexOf('"', index1)
+
+        base = params[0]
+        currency = params[1]
+        amount = parseFloat(string.substring(index1, index2)).toFixed(2)
+        marketName = "Coinbase";
+
+    } else {
+
+        base = params[0]
+        currency = params[1]
+        amount = res.errors[0].message;
+    }
+}
+
+// Fallback to Bitfinex if Coinbase Req failed
+if (coinbaseReqFailed == true) {
+    const bitfinexUrl = 'https://api-pub.bitfinex.com/v2/tickers?symbols=t' + params[0] + params[1]
+    const bitfinexReq = new Request(bitfinexUrl)
+    const bitfinexRes = await bitfinexReq.loadJSON()
+    if (JSON.stringify(bitfinexRes) != "[]") {
+        amount = (bitfinexRes[Object.keys(bitfinexRes)[0]][9]).toString()
+        marketName = "Bitfinex"
+    }
 }
 
 // Image fetching
 let img = {};
 let i = {};
 // Fetch belonging image to crypto symbol
-if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+if (coinbaseReqFailed == false || marketName != "") {
     i = new Request('https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@9ab8d6934b83a4aa8ae5e8711609a70ca0ab1b2b/128/white/' + base.toLowerCase() + '.png')
 }
 try {
@@ -71,7 +113,7 @@ try {
 // Fetch further information to crpyto from Coinpaprika
 let name = "";
 let rank = "";
-if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+if (coinbaseReqFailed == false || marketName != "") {
     const nameUrl = 'https://api.coinpaprika.com/v1/search?q=' + base.toLowerCase() + '&c=currencies&limit=1'
     const nameReq = new Request(nameUrl)
     const resName = await nameReq.loadJSON()
@@ -82,12 +124,14 @@ let upticker = SFSymbol.named("chevron.up");
 let downticker = SFSymbol.named("chevron.down");
 let latest = "";
 let resLatest = "";
-if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+if (coinbaseReqFailed == false || marketName != "") {
     let replaceName = name.replaceAll(" ", "-");
     const latestUrl = 'https://api.coinpaprika.com/v1/coins/' + base.toLowerCase() + '-' + replaceName.toLowerCase() + '/ohlcv/latest/'
     const latestReq = new Request(latestUrl)
     resLatest = await latestReq.loadJSON()
-    if (JSON.stringify(resLatest).toLowerCase().includes("errors") == false && JSON.stringify(resLatest) != "[]") {
+    console.log(coinbaseReqFailed)
+    console.log(marketName)
+    if (coinbaseReqFailed == false && JSON.stringify(resLatest) != "[]" || marketName != "") {
         latest = resLatest[0].close;
         latest = parseFloat(latest).toFixed(2);
     }
@@ -125,17 +169,26 @@ function createWidget(base, amount, currency, img, name, rank) {
     let baseStack = imageTextStack.addStack()
     baseStack.layoutHorizontally();
 
-    let baseText = baseStack.addText(base)
-    baseText.textColor = Color.white()
-    baseText.font = Font.systemFont(18)
+    if (marketName != "") {
+        let baseText = baseStack.addText(base)
+        baseText.textColor = Color.white()
+
+        if (baseText.length < 5) {
+            baseText.font = Font.systemFont(18)
+        } else {
+            baseText.font = Font.systemFont(17)
+        }
+    }
 
     let tickerStack = baseStack.addStack();
     tickerStack.layoutHorizontally();
 
+    console.log(marketName)
+
     // Stack for ticker image: if course yesterday is lower than today show red ticker
     // if course yesterday
     if (JSON.stringify(resLatest).toLowerCase().includes("errors") == false && JSON.stringify(resLatest) != "[]" &&
-        JSON.stringify(res).toLowerCase().includes("errors") == false) {
+        coinbaseReqFailed == false || marketName != "") {
         let ticker = null;
         if (USDamount < latest) {
             ticker = tickerStack.addImage(downticker.image);
@@ -150,7 +203,7 @@ function createWidget(base, amount, currency, img, name, rank) {
 
     // Rank of crypto token
     let rankText = "";
-    if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+    if (coinbaseReqFailed == false || marketName != "") {
         rankText = imageTextStack.addText("Rank: " + rank)
     }
     rankText.textColor = Color.white()
@@ -180,7 +233,7 @@ function createWidget(base, amount, currency, img, name, rank) {
 
     // Round amount to 2 decimal positions
     let amountTxt = "";
-    if (JSON.stringify(res).toLowerCase().includes("errors") == false) {
+    if (coinbaseReqFailed == false || marketName != "") {
         // Cut numbers over 10 Million and show just with ending 'M'
         amount = (amount / 100) * (params[2] * 100)
         if (parseFloat(amount) >= 10000000) {

@@ -7,12 +7,15 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
 ![cryptoTickerWidget](img/cryptoTickerWidget_2.jpg)
 
  <p>
+   <a href="#description">Setup</a> • 
    <a href="#setup">Setup</a> •
    <a href="#usage">Usage</a> •
    <a href="#links">Links</a> •
    <a href="#contribution">Contribution</a> •
    <a href="#todo">TODO</a> •
  </p>
+
+## Description
 
 ## Setup
 
@@ -42,5 +45,6 @@ If you have any ideas for extensions or changes just let me know.
 
 - DONE: Errorhandling for missing json objects
 - DONE: Add up and down symbols
-- Fallback to Coinpaprika course
-- New Parameter for a specific amount
+- DONE: Fallback to Bitfinex course
+- DONE: New Parameter for a specific amount
+- Update images and description
