@@ -14,7 +14,7 @@ Changelog:
 let params = null;
 // Parameter takeover from input
 if (args.widgetParameter == null) {
-    params = ["DOGE", "EUR", "1"]; // Default input without parameters
+    params = ["DOGE", "EUR", "300"]; // Default input without parameters
 } else {
     params = args.widgetParameter.split(",")
     console.log(params)
@@ -54,6 +54,7 @@ if (coinbaseReqFailed == false) {
         currency = params[1]
         amount = res.errors[0].message;
     }
+
 }
 
 // Second try with anoher coinbase api  
@@ -65,15 +66,9 @@ if (coinbaseReqFailed == true) {
     coinbaseReqFailed = JSON.stringify(res2).toLowerCase().includes("errors")
     if (coinbaseReqFailed == false) {
 
-        const string = JSON.stringify(res2.data.rates)
-
-        const indexFIAT = string.indexOf(params[1])
-        const index1 = indexFIAT + 6
-        const index2 = string.indexOf('"', index1)
-
-        base = params[0]
+        base = res2.data.currency
         currency = params[1]
-        amount = parseFloat(string.substring(index1, index2)).toFixed(2)
+        amount = res2.data.rates.EUR
         marketName = "Coinbase";
 
     } else {
@@ -129,8 +124,6 @@ if (coinbaseReqFailed == false || marketName != "") {
     const latestUrl = 'https://api.coinpaprika.com/v1/coins/' + base.toLowerCase() + '-' + replaceName.toLowerCase() + '/ohlcv/latest/'
     const latestReq = new Request(latestUrl)
     resLatest = await latestReq.loadJSON()
-    console.log(coinbaseReqFailed)
-    console.log(marketName)
     if (coinbaseReqFailed == false && JSON.stringify(resLatest) != "[]" || marketName != "") {
         latest = resLatest[0].close;
         latest = parseFloat(latest).toFixed(2);
@@ -182,8 +175,6 @@ function createWidget(base, amount, currency, img, name, rank) {
 
     let tickerStack = baseStack.addStack();
     tickerStack.layoutHorizontally();
-
-    console.log(marketName)
 
     // Stack for ticker image: if course yesterday is lower than today show red ticker
     // if course yesterday
