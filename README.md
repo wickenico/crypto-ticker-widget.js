@@ -4,7 +4,7 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
  ![GitHub last commit](https://img.shields.io/github/last-commit/wickenico/crypto-ticker-widget.js) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/wickenico/crypto-ticker-widget.js)
  ![Visits Badge](https://badges.pufler.dev/visits/wickenico/crypto-ticker-widget.js)
 
-![cryptoTickerWidget](img/cryptoTickerWidget_2.jpg)
+![cryptoTickerWidget](img/cryptoTickerWidget.jpg)
 
  <p>
    <a href="#description">Setup</a> • 
@@ -25,14 +25,17 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
  4. Create a new widget on homescreen and select this script in scriptable
 
  ## Usage
-- Parameters: Symbol of crypto currency + , + symbol of fiat currency
-- Example: ETH,EUR (small and big letters possible)
-- If you don't enter any parameters the default is set to BTC,USD
+- Parameters separated with ",": 
+  - Symbol of crypto currency
+  - symbol of fiat currency
+  - amount of crypto to calculate
+- Example: DOGE,USD,300 (small and big letters possible)
+- The third parameter is set to 1 if it is not passed
 - If there's no picture of the selected available it will be filled with a placeholder image
 
-![cryptotickerWidgetSettings](img/cryptoTickerWidgetSettings_2.jpg) <br>
+![cryptotickerWidgetSettings](img/cryptoTickerWidgetSettings.jpg) <br>
 
-![cryptotickerWidgetADA](img/cryptoTickerWidgetADA_2.jpg)
+![cryptotickerWidgetADA](img/cryptoTickerWidgetDOGE.jpg)
 ## Links
 Coinbase API: https://developers.coinbase.com/api/v2#get-spot-price <br>
 Coinpaprika API: https://api.coinpaprika.com/#tag/Tools/paths/~1search/get <br>
