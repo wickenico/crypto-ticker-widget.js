@@ -60,4 +60,4 @@ If you have any ideas for extensions or changes just let me know.
 - DONE: Add up and down symbols
 - DONE: Fallback to Bitfinex course
 - DONE: New Parameter for a specific amount
-- Update images and description
+- DONE: Update images and description
