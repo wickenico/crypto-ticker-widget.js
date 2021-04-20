@@ -26,11 +26,11 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
 
  ## Usage
 - Parameters separated with ",": 
-  - Symbol of crypto currency
-  - symbol of fiat currency
-  - amount of crypto to calculate
+  - 1. Symbol of crypto currency
+  - 2. Symbol of fiat currency
+  - 3. Amount of crypto to calculate
 - Example: DOGE,USD,300 (small and big letters possible)
-- The third parameter is set to 1 if it is not passed
+- The 3rd parameter is set to 1 if it is not passed.
 - If there's no picture of the selected available it will be filled with a placeholder image
 
 ![cryptotickerWidgetSettings](img/cryptoTickerWidgetSettings.jpg) <br>
