@@ -1,5 +1,7 @@
 # crypto-ticker-widget.js
-A Scriptable widget that shows the current crypto course in fiat currency based on coinbase
+A Scriptable widget that shows the current crypto course in fiat currency based on coinbase <br>
+
+(I'm looking for free crypto APIs without any apikey or auth constraint just let me know your favs!)
 
  ![GitHub last commit](https://img.shields.io/github/last-commit/wickenico/crypto-ticker-widget.js) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/wickenico/crypto-ticker-widget.js)
  ![Visits Badge](https://badges.pufler.dev/visits/wickenico/crypto-ticker-widget.js)
@@ -16,6 +18,14 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
  </p>
 
 ## Description
+
+Meanings in the Widget:
+- BTC: Symbol of the cryptocurrency
+- Rank: Ranking order by total volume in relation of all cryptocurrencies
+- Coinbase: Stock exchange from which the course is obtained (Actually Coinbase or Bitfinex)
+- Bitcoin: Whole name of cryptocurrency
+- 55772.75 USD: Value of 1 BTC in USD
+- 20 April 2021: Today's date
 
 ## Setup
 
