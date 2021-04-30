@@ -14,7 +14,7 @@ Changelog:
 let params = null;
 // Parameter takeover from input
 if (args.widgetParameter == null) {
-    params = ["DOGE", "EUR", "300"]; // Default input without parameters
+    params = ["DOGE", "EUR", "1"]; // Default input without parameters
 } else {
     params = args.widgetParameter.split(",")
     console.log(params)
@@ -67,7 +67,7 @@ if (coinbaseReqFailed == true) {
     if (coinbaseReqFailed == false) {
 
         base = res2.data.currency
-        currency = params[1]
+        currency = params[1].toUpperCase()
         amount = res2.data.rates.EUR
         marketName = "Coinbase";
 
@@ -112,14 +112,20 @@ if (coinbaseReqFailed == false || marketName != "") {
     const nameUrl = 'https://api.coinpaprika.com/v1/search?q=' + base.toLowerCase() + '&c=currencies&limit=1'
     const nameReq = new Request(nameUrl)
     const resName = await nameReq.loadJSON()
-    name = resName.currencies[0].name;
-    rank = resName.currencies[0].rank;
+    try {
+        name = resName.currencies[0].name;
+        rank = resName.currencies[0].rank;
+    } catch (e) {
+        name = "Not found";
+        rank = 0;
+    }
 }
+
 let upticker = SFSymbol.named("chevron.up");
 let downticker = SFSymbol.named("chevron.down");
 let latest = "";
 let resLatest = "";
-if (coinbaseReqFailed == false || marketName != "") {
+if ((coinbaseReqFailed == false || marketName != "") && name != "Not found") {
     let replaceName = name.replaceAll(" ", "-");
     const latestUrl = 'https://api.coinpaprika.com/v1/coins/' + base.toLowerCase() + '-' + replaceName.toLowerCase() + '/ohlcv/latest/'
     const latestReq = new Request(latestUrl)
@@ -169,7 +175,7 @@ function createWidget(base, amount, currency, img, name, rank) {
         if (baseText.length < 5) {
             baseText.font = Font.systemFont(18)
         } else {
-            baseText.font = Font.systemFont(17)
+            baseText.font = Font.systemFont(14)
         }
     }
 
@@ -230,6 +236,8 @@ function createWidget(base, amount, currency, img, name, rank) {
         if (parseFloat(amount) >= 10000000) {
             amount = (parseFloat(amount) / 1000000).toFixed(2).replace(/\.0$/, '');
             amount += "M";
+        } else if (parseFloat(amount) <= 0.01) {
+            amount = parseFloat(amount).toFixed(5)
         } else {
             amount = parseFloat(amount).toFixed(2);
         }
