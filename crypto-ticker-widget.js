@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------
 Script: crypto-ticker-widget
 Author: Nico Wickersheim
-Version: 1.0.0
+Version: 2.0.0
 
 Description:
 Displays the current course of a cryptoin any fiat currency based on 
@@ -10,6 +10,7 @@ the data of coinbase API.
 Changelog:
 
 1.0.0: Initialization
+2.0.0: Fallback to Bitfinex, Error Catching, Design updates
 -------------------------------------------------------------- */
 let params = null;
 // Parameter takeover from input

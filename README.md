@@ -1,4 +1,4 @@
-# crypto-ticker-widget.js
+# crypto-ticker-widget.js (v2.0.0)
 A Scriptable widget that shows the current crypto course in fiat currency based on coinbase <br>
 
 (I'm looking for free crypto APIs without any apikey or auth constraint just let me know your favs!)
@@ -49,6 +49,7 @@ Meanings in the Widget:
 ## Links
 Coinbase API: https://developers.coinbase.com/api/v2#get-spot-price <br>
 Coinpaprika API: https://api.coinpaprika.com/#tag/Tools/paths/~1search/get <br>
+Bitfinex API: https://docs.bitfinex.com/docs/introduction <br>
 
 ## Contribution
 
