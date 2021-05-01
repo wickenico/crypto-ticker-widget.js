@@ -69,7 +69,7 @@ if (coinbaseReqFailed == true) {
 
         base = res2.data.currency
         currency = params[1].toUpperCase()
-        amount = res2.data.rates.EUR
+        amount = res2.data.rates[params[1]]
         marketName = "Coinbase";
 
     } else {
