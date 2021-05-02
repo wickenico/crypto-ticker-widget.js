@@ -38,7 +38,7 @@ Meanings in the Widget:
 - Parameters separated with ",": 
   - 1. Symbol of crypto currency
   - 2. Symbol of fiat currency
-  - 3. Amount of crypto to calculate
+  - 3. Amount of crypto to calculate (Split with "."!)
 - Example: DOGE,USD,300 (small and big letters possible)
 - The 3rd parameter is set to 1 if it is not passed.
 - If there's no picture of the selected available it will be filled with a placeholder image
