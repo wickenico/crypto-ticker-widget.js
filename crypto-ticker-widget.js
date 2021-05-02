@@ -23,6 +23,10 @@ if (args.widgetParameter == null) {
 
 if (params[2] == null) {
     params[2] = 1;
+} else {
+    if (params[2].includes(",")) {
+        params[2] = params[2].replaceAll(",", ".")
+    }
 }
 
 // Fetch Coinbase API json object
