@@ -76,6 +76,9 @@ if (coinbaseReqFailed == true) {
         amount = res2.data.rates[params[1]]
         marketName = "Coinbase";
 
+        // Get value in USD for selecting ticker symbol later
+        USDamount = res2.data.rates.USD;
+
     } else {
 
         base = params[0]
