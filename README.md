@@ -3,7 +3,8 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
 
 (I'm looking for free crypto APIs without any apikey or auth constraint just let me know your favs!)
 
- ![GitHub last commit](https://img.shields.io/github/last-commit/wickenico/crypto-ticker-widget.js) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/wickenico/crypto-ticker-widget.js)
+[![Download with ScriptDude](https://scriptdu.de/download.svg)](https://scriptdu.de/?name=Crypto+Ticker&source=https%3A%2F%2Fgist.githubusercontent.com%2Fwickenico%2F433d5bbbc1c77b01e4e2fea0cc8f5335%2Fraw%2Fb4e960df50209dc081c1846f2ed9c951ee70984c%2Fcrypto-ticker-widget.js&docs=https%3A%2F%2Fgist.github.com%2Fwickenico%2F433d5bbbc1c77b01e4e2fea0cc8f5335#generator)
+
  ![Visits Badge](https://badges.pufler.dev/visits/wickenico/crypto-ticker-widget.js)
 
 ![cryptoTickerWidget](img/cryptoTickerWidget.jpg)
