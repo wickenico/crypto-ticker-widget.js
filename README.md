@@ -15,7 +15,7 @@ A Scriptable widget that shows the current crypto course in fiat currency based 
    <a href="#usage">Usage</a> •
    <a href="#links">Links</a> •
    <a href="#contribution">Contribution</a> •
-   <a href="#todo">TODO</a> •
+   <a href="#roadmap">ROADMAP</a> •
  </p>
 
 ## Description
@@ -56,10 +56,11 @@ Bitfinex API: https://docs.bitfinex.com/docs/introduction <br>
 
 If you have any ideas for extensions or changes just let me know.
 
-## TODO
+## Roadmap
 
 - DONE: Errorhandling for missing json objects
 - DONE: Add up and down symbols
 - DONE: Fallback to Bitfinex course
 - DONE: New Parameter for a specific amount
 - DONE: Update images and description
+- Add Notifications 
