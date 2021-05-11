@@ -11,11 +11,12 @@ Changelog:
 
 1.0.0: Initialization
 2.0.0: Fallback to Bitfinex, Error Catching, Design updates
+2.0.1: Special Handling for IOTA/MIOTA
 -------------------------------------------------------------- */
 let params = null;
 // Parameter takeover from input
 if (args.widgetParameter == null) {
-    params = ["DOGE", "EUR", "1"]; // Default input without parameters
+    params = ["DOGE", "EUR", "300"]; // Default input without parameters
 } else {
     params = args.widgetParameter.split(",")
     console.log(params)
@@ -23,10 +24,6 @@ if (args.widgetParameter == null) {
 
 if (params[2] == null) {
     params[2] = 1;
-} else {
-    if (params[2].includes(",")) {
-        params[2] = params[2].replaceAll(",", ".")
-    }
 }
 
 // Fetch Coinbase API json object
@@ -34,7 +31,7 @@ const url = 'https://api.coinbase.com/v2/prices/' + params[0] + '-' + params[1] 
 const req = new Request(url)
 const res = await req.loadJSON()
 let base = "";
-let currency = "";
+let currency = ""
 let amount = "";
 let marketName = "";
 let USDamount = "";
@@ -59,7 +56,6 @@ if (coinbaseReqFailed == false) {
         currency = params[1]
         amount = res.errors[0].message;
     }
-
 }
 
 // Second try with anoher coinbase api  
@@ -75,7 +71,7 @@ if (coinbaseReqFailed == true) {
         currency = params[1].toUpperCase()
         amount = res2.data.rates[params[1]]
         marketName = "Coinbase";
-
+        
         // Get value in USD for selecting ticker symbol later
         USDamount = res2.data.rates.USD;
 
@@ -85,6 +81,8 @@ if (coinbaseReqFailed == true) {
         currency = params[1]
         amount = res.errors[0].message;
     }
+    
+    
 }
 
 // Fallback to Bitfinex if Coinbase Req failed
@@ -97,6 +95,10 @@ if (coinbaseReqFailed == true) {
         marketName = "Bitfinex"
     }
 }
+
+    if (params[0] == "IOT") {
+      base = "MIOTA";
+    }
 
 // Image fetching
 let img = {};
