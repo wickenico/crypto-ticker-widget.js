@@ -12,6 +12,7 @@ Changelog:
 1.0.0: Initialization
 2.0.0: Fallback to Bitfinex, Error Catching, Design updates
 2.0.1: Special Handling for IOTA/MIOTA
+2.0.2: Special Handling for CRO
 -------------------------------------------------------------- */
 let params = null;
 // Parameter takeover from input
@@ -71,7 +72,7 @@ if (coinbaseReqFailed == true) {
         currency = params[1].toUpperCase()
         amount = res2.data.rates[params[1]]
         marketName = "Coinbase";
-        
+
         // Get value in USD for selecting ticker symbol later
         USDamount = res2.data.rates.USD;
 
@@ -81,8 +82,8 @@ if (coinbaseReqFailed == true) {
         currency = params[1]
         amount = res.errors[0].message;
     }
-    
-    
+
+
 }
 
 // Fallback to Bitfinex if Coinbase Req failed
@@ -96,9 +97,9 @@ if (coinbaseReqFailed == true) {
     }
 }
 
-    if (params[0] == "IOT") {
-      base = "MIOTA";
-    }
+if (params[0] == "IOT") {
+    base = "MIOTA";
+}
 
 // Image fetching
 let img = {};
@@ -137,6 +138,11 @@ let latest = "";
 let resLatest = "";
 if ((coinbaseReqFailed == false || marketName != "") && name != "Not found") {
     let replaceName = name.replaceAll(" ", "-");
+
+    if (params[0] == "CRO") {
+        replaceName = "cryptocom-chain";
+    }
+
     const latestUrl = 'https://api.coinpaprika.com/v1/coins/' + base.toLowerCase() + '-' + replaceName.toLowerCase() + '/ohlcv/latest/'
     const latestReq = new Request(latestUrl)
     resLatest = await latestReq.loadJSON()

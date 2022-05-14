@@ -1,4 +1,4 @@
-# crypto-ticker-widget.js (v2.0.0)
+# crypto-ticker-widget.js (v2.0.2)
 A Scriptable widget that shows the current crypto course in fiat currency based on coinbase <br>
 
 (I'm looking for free crypto APIs without any apikey or auth constraint just let me know your favs!)
